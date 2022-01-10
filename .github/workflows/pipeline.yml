@@ -1,0 +1,23 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-18.04
+    steps:
+      # uses 关键字告诉工作流程运行特定的操作。操作是一段可重用的代码，就像函数一样。可以在代码库中的单独文件中定义操作，也可以使用公共代码库中可用的操作。
+      #  在这里，我们使用一个公共动作actions/checkout ，并指定一个版本(@v2) ，以避免动作更新时可能发生的中断更改。checkout操作实现了它的名字所暗示的功能: 它从 git 签出项目源代码。
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        # with 关键字用于为动作提供一个“参数”。这里的参数指定了我们想要使用的 Node.js 版
+        with:
+          node-version: '12.x'
+      - name: npm install
+        run: npm install
+      - name: npm lint
+        run: npm run eslint
